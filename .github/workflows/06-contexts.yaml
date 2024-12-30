@@ -16,4 +16,4 @@ jobs:
                 echo "Run ID: ${{ github.run_id }}"
                 echo "Run number: ${{ github.run_number }}"
             - name: Display Repo Variable
-              run: echo "MY_VAR is $MY_VAR"
+              run: echo "MY_VAR is ${{ vars.MY_VAR }}"
