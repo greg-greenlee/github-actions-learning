@@ -8,9 +8,15 @@ on:
                 required: false
                 default: 'false'
 run-name: 06 - Contexts | DEBUG - ${{ inputs.debug }}
+env:
+    MY_WORKFLOW_VAR: "workflow"
+    MY_OVERWRITTEN_VAR: "workflow"
 jobs:
     echo-data:
         runs-on: ubuntu-latest
+        env:
+            MY_JOB_VAR: "job"
+            MY_OVERWRITTEN_VAR: "job"
         steps:
             - name: Display Information
               run: |
@@ -21,5 +27,15 @@ jobs:
                 echo "Workflow: ${{ github.workflow }}"
                 echo "Run ID: ${{ github.run_id }}"
                 echo "Run number: ${{ github.run_number }}"
-            - name: Display Repo Variable
+            - name: Retrieve Variable
               run: echo "MY_VAR is ${{ vars.MY_VAR }}"
+            - name: Print Env Variables
+              env:
+                  MY_OVERWRITTEN_VAR: "step"
+              run: |
+                echo "Workflow env: ${{ env.MY_WORKFLOW_VAR }}"
+                echo "Overwritten env: ${{ env.MY_OVERWRITTEN_VAR }}"
+            - name: Print Job Env Variables
+              run: |
+                echo "Workflow env: ${{ env.MY_WORKFLOW_VAR }}"
+                echo "Overwritten env: ${{ env.MY_OVERWRITTEN_VAR }}"
