@@ -15,5 +15,5 @@ jobs:
                 echo "I will be skipped"
             - name: I will execute
               run: |
-                if: failure() 
+                if: always() 
                 echo "I will execute"
