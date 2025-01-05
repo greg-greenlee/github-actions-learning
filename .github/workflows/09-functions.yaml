@@ -10,10 +10,15 @@ jobs:
               run: |
                 exit 1
             - name: I will be skipped
+              if: success()
               run: |
-                if: success()
                 echo "I will be skipped"
             - name: I will execute
+              if: always()
               run: |
-                if: always() 
                 echo "I will execute"
+            - name: I will execute
+              if: !cancelled()
+              run: |
+                echo "I  will always print, except when the workflow is cancelled."
+
