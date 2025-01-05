@@ -11,9 +11,9 @@ jobs:
                 exit 1
             - name: I will be skipped
               run: |
-                if failure()
+                if: success()
                 echo "I will be skipped"
             - name: I will execute
               run: |
-                if success() 
+                if: failure() 
                 echo "I will execute"
