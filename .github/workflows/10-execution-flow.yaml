@@ -6,7 +6,7 @@ on:
                 description: 'Run the unit tests'
                 required: true
                 type: boolean
-                default: false
+                default: true
 jobs:
     lint-build:
         runs-on: ubuntu-latest
@@ -21,7 +21,7 @@ jobs:
               run: |
                 echo "Running unit tests...."
             - name: Failing tests
-              if: ${{ github.event.inputs.pass-unit-tests == 'false' }}
+              if: ${{ inputs.pass-unit-tests == 'false' }}
               run: |
                 exit 1
     deploy-nonprod:
