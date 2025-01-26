@@ -22,4 +22,4 @@ jobs:
               id: build
               run: |
                 echo "status=${{ github.event.inputs.build_status }}" >> $GITHUB_OUTPUT
-                echo $GITUB_OUTPUT
+                cat $GITUB_OUTPUT
