@@ -27,9 +27,9 @@ jobs:
                 echo "status=${{ github.event.inputs.build_status }}" >> $GITHUB_OUTPUT
                 echo "output1=value1" >> $GITHUB_OUTPUT
                 echo "output2=value2" >> $GITHUB_OUTPUT
-                cat $GITHUB_OUTPUT
+                cat "GITHUB_OUTPUT: " $GITHUB_OUTPUT
                 echo "mistake=true" > "$GITHUB_OUTPUT"
-                cat $GITHUB_OUTPUT
+                cat "Overwritten GITHUB_OUTPUT: " $GITHUB_OUTPUT
     deploy:
         if: ${{ success() && needs.build.outputs.build-status == 'success' }}
         runs-on: ubuntu-latest
