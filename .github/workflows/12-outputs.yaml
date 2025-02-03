@@ -24,7 +24,7 @@ jobs:
             - name: build
               id: build
               run: |
-                echo "status=${{ github.event.inputs.build_status }}" >> $GITHUB_OUTPUT
+                echo "status=${{ inputs.build_status }}" >> $GITHUB_OUTPUT
                 echo "output1=value1" >> $GITHUB_OUTPUT
                 echo "output2=value2" >> $GITHUB_OUTPUT
                 echo "GITHUB_OUPUT: " ; cat $GITHUB_OUTPUT
