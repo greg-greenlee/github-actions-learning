@@ -6,20 +6,36 @@ on:
                 type: boolean
                 description: Use cache
                 default: true
+            node-version:
+                type: choice
+                options:
+                - '18.x'
+                - '20.x'
+                - '21.x'
+                default: '20.x'
+                description: Node version
 jobs:
     build:
         runs-on: ubuntu-latest
         defaults:
           run: 
-            working-directory: 13-using-caching/react-app
+            working-directory: 04-using-actions/react-app
         steps:
             - name: Checkout code
               uses: actions/checkout@v2
             - name: Setup Node
               uses: actions/setup-node@v2
               with:
-                node-version: '20.x'
+                node-version: ${{ github.event.inputs.node-version }}
+            - name: Download Cache Dependencies
+              if: ${{ github.event.inputs.use-cache }}
+              id: cache
+              uses: actions/cache@v3
+              with: 
+                key: deps-node-modules-${{ hashFiles('04-using-actions/react-app/package-lock.json') }}
+                path: 13-caching/react-app/node_modules
             - name: Install Dependencies
+              if: steps.cache.outputs.cache-hit != 'true'
               run: npm ci
             - name: Testing
               run: npm test
@@ -27,5 +43,42 @@ jobs:
               run: npm run build
             - name: Deploying to Nonprod
               run: echo "Deploying to Nonprod"
+    install-deps:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+            - name: Setup Node
+              uses: actions/setup-node@v2
+              with:
+                node-version: ${{ github.event.inputs.node-version }}
+            - name: Calculate cache key
+              id: cache-key
+              run: echo "::set-output name=key::deps-node-modules-${{ hashFiles('04-using-actions/react-app/package-lock.json') }}"
+            - name: Download Cache Dependencies
+              if: ${{ github.event.inputs.use-cache }}
+              id: cache
+              uses: actions/cache@v3
+              with: 
+                key: ${{ steps.cache-key.outputs.key }}
+            - name: Install Dependencies
+              if: steps.cache.outputs.cache-hit != 'true'
+              run: npm ci
+    Linting:
+        runs-on: ubuntu-latest
+        needs: install-deps
+        defaults:
+          run:
+            working-directory: 04-using-actions/react-app
+        steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+        - name: Setup Node
+          uses: actions/setup-node@v2
+          with:
+            node-version: ${{ github.event.inputs.node-version }}
+        - name: Linting
+          run: npm run lint
+
 
             
