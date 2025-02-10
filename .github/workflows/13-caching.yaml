@@ -33,7 +33,7 @@ jobs:
               uses: actions/cache@v3
               with: 
                 key: deps-node-modules-${{ hashFiles('04-using-actions/react-app/package-lock.json') }}
-                path: 13-caching/react-app/node_modules
+                path: 04-using-actions/react-app/node_modules
             - name: Install Dependencies
               if: steps.cache.outputs.cache-hit != 'true'
               run: npm ci
@@ -60,6 +60,7 @@ jobs:
               id: cache
               uses: actions/cache@v3
               with: 
+                path: 04-using-actions/react-app/node_modules
                 key: ${{ steps.cache-key.outputs.key }}
             - name: Install Dependencies
               if: steps.cache.outputs.cache-hit != 'true'
