@@ -1,0 +1,19 @@
+name: 16 - Working with Environments
+run-name: 16 - Working with Environments | env - ${{ inputs.target-env }}
+on:
+    workflow_dispatch:
+        inputs:
+            target-env:
+                description: 'Environment to deploy to'
+                required: true
+                default: 'staging'
+                type: environment
+jobs:
+    echo:
+        runs-on: ubuntu-latest
+        environment: ${{ github.event.inputs.target-env }}
+        env:
+            MY_ENV_VALUE: ${{ vars.MY_ENV_VALUE || 'default_value' }}
+            steps:
+                - name: Echo vars
+                  run: echo "Env variable: ${{ env.MY_ENV_VALUE }}"
