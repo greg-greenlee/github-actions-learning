@@ -1,0 +1,46 @@
+name: Cache Node and NPM Dependencies
+description: This action allows to cache both Node and NPM dependencies based on the package-lock.json file
+inputs:
+  node-version:
+    required: true
+    description: NodeJS version to use
+    default: 20.x
+  working-dir:
+    required: false
+    description: The working directory of the application
+    default: .
+  target-env: 
+    required: false
+    description: "dev or prod"
+    default: dev
+runs:
+  using: composite
+  steps:
+    - name: Setup NodeJS versions ${{ inputs.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - name: Cache dependencies
+      id: cache
+      uses: actions/cache@v3
+      with:
+        path: ${{ inputs.working-dir }}/node_modules
+        key: node-modules-${{ hashFiles('format('{0}/{1}', inputs.working-dir, 'package-lock.json')) }}
+    #### Alternate way to do the same thing as the next two steps ####
+    # - name: Install dependencies
+    # if: steps.cache.outputs.cache-hit != 'true'
+    # run: ${{ inputs.target-env == 'dev' ? 'npm ci' : 'npm ci --omit=dev' }}
+    # shell: bash
+    # working-directory: ${{ inputs.working-dir }}
+
+    - name: Install dependencies for dev
+      if: steps.cache.outputs.cache-hit != 'true' && inputs.target-env == 'dev'
+      run: npm ci
+      shell: bash
+      working-directory: ${{ inputs.working-dir }}
+    - name: Install dependencies for prod
+      if: inputs.target-env == 'prod'
+      run: npm ci --omit=dev
+      shell: bash
+      working-directory: ${{ inputs.working-dir }}
