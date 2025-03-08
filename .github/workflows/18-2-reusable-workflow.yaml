@@ -1,0 +1,19 @@
+name: 18 - 2 - Reusable Workflows
+on:
+    workflow_dispatch:
+jobs:
+    deploy:
+        uses: ./.github/workflows/18-1-reusable-workflows.yaml
+        with:
+            target-directory: .github/workflows
+    print-outputs:
+        runs-on: ubuntu-latest
+        needs: deploy
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v3
+            - name: Print Outputs
+              run: |
+                echo "Build status: ${{ needs.deploy.outputs.status }}"
+                echo "URL: ${{ needs.deploy.outputs.url }}"
+                 
