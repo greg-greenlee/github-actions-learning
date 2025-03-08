@@ -5,23 +5,24 @@ on:
             target-directory:
                 type: string
                 required: true
-        outputs:
+        outputs: # Define the outputs of the workflow from the jobs to be used by caller workflows
             build-status:
                 description: The status of the build process
-                value: ${{ steps.deploy.outputs.status }}
+                value: ${{ jobs.deploy.outputs.status }}
             url:
                 description: The URL of the deployed application
-                value: ${{ steps.deploy.outputs.url }}
+                value: ${{ jobs.deploy.outputs.url }}
 jobs:
     deploy:
         runs-on: ubuntu-latest
-        outputs:
-            status: ${{ job.status }}
+        outputs: # Declares the outputs of the job from the steps in the job
+            status: ${{ steps.build.outputs.build-status }}
             url: ${{ steps.deploy.outputs.url }}
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v4
               name: Checkout repo
             - name: Build
+              id: build
               run: |
                 echo "Building using directory ${{ inputs.target-directory }}"
                 echo "build-status=success" >> $GITHUB_ENV
