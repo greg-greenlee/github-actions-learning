@@ -21,13 +21,15 @@ jobs:
         steps:
             - uses: actions/checkout@v4
               name: Checkout repo
+            
             - name: Build
               id: build
               run: |
                 echo "Building using directory ${{ inputs.target-directory }}"
-                echo "build-status=success" >> $GITHUB_ENV
+                echo "build-status=success" >> $GITHUB_OUTPUT
+            
             - name: Deploy
               id: deploy
               run: |
                 echo "Deploying build artifacts"
-                echo "url=https://www.google.com" >> $GITHUB_ENV
+                echo "url=https://www.google.com" >> $GITHUB_OUTPUT
