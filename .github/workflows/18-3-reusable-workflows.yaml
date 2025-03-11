@@ -9,3 +9,5 @@ jobs:
     e2e-tests:
       needs: deploy
       uses: greg-greenlee/github-actions-course-example-e2e/.github/workflows/e2e.yaml@main
+      secrets:
+        access-token: ${{ secrets.E2E_REPO_TOKEN }}
