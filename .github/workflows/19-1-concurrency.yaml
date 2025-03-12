@@ -3,6 +3,7 @@ on:
     workflow_dispatch:
 concurrency: 
     group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true # This will cancel the previous run if a new one is triggered
     
 jobs:
     ping:
