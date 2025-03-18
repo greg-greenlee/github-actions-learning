@@ -1,4 +1,4 @@
-name: 20 - Workflow Security
+name: 20 - Workflow Security - 2
 on: 
     pull_request:
 jobs:
