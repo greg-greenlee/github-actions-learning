@@ -18,3 +18,20 @@ jobs:
                 echo "PR is not a feature"
                 exit 1
                 fi
+    safer-pr:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Check PR title
+              env:
+                TITLE: ${{ github.event.pull_request.title }}
+              run: |
+                if [[ $TITLE =~ ^fix ]]; then
+                echo "PR is a bug fix"
+                exit 0
+                else
+                echo "PR is not a bug fix"
+                exit 1
+                fi
