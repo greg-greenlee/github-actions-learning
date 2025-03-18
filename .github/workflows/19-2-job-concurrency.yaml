@@ -1,0 +1,35 @@
+name: 19 - 2 - Managing Job Concurrency
+on: 
+    workflow_dispatch:
+    
+jobs:
+    ping:
+        runs-on: ubuntu-latest
+        concurrency: 
+            group: ${{ github.workflow }}-${{ github.ref }}
+            cancel-in-progress: true # This job will be affected by concurrency
+        steps:
+            - name: Build
+              run: |
+                echo "Building"
+                sleep 1m
+                echo "Build complete"
+            - name: Deploy
+              run: |
+                echo "Deploying"
+                sleep 1m
+                echo "Deployment complete"
+    ping-without-concurrency:
+        # This job will not be affected by the concurrency settings
+        runs-on: ubuntu-latest
+        steps:
+            - name: Build
+              run: |
+                echo "Building"
+                sleep 1m
+                echo "Build complete"
+            - name: Deploy
+              run: |
+                echo "Deploying"
+                sleep 1m
+                echo "Deployment complete"
