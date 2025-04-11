@@ -14,11 +14,11 @@ on:
                 default: "eu-west-1"
                 type: string
 jobs:
-    strategy:
-        matrix:
-            region: [ ${{ inputs.region-1 }}, ${{ inputs.region-2 }}, ${{ inputs.region-3 }} ]
     deploy:
         runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                region: ${{ inputs.region-1 }}, ${{ inputs.region-2 }}, ${{ inputs.region-3 }} 
         steps:
             - name: Deploy to AWS
               run: |
