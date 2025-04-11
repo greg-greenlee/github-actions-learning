@@ -1,3 +1,4 @@
+name: 21 - AWS- Resources
 on:
     workflow_dispatch:
         inputs:
