@@ -1,26 +1,31 @@
 name: 21 - AWS- Resources
 on:
     workflow_dispatch:
-        inputs:
-            region-1:
-                description: "AWS region 1"
-                default: "us-east-1"
-                type: string
-            region-2:
-                description: "AWS region 2"
-                default: "us-west-2"
-                type: string
-            region-3:
-                description: "AWS region 3"
-                default: "eu-west-1"
-                type: string
+        # inputs:
+        #     region-1:
+        #         description: "AWS region 1"
+        #         default: "us-east-1"
+        #         type: string
+        #     region-2:
+        #         description: "AWS region 2"
+        #         default: "us-west-2"
+        #         type: string
+        #     region-3:
+        #         description: "AWS region 3"
+        #         default: "eu-west-1"
+        #         type: string
+# env:
+#     REGION_1: ${{ inputs.region-1 }}
+#     REGION_2: ${{ inputs.region-2 }}
+#     REGION_3: ${{ inputs.region-3 }}
 jobs:
     deploy:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                region: ${{ inputs.region-1 }}, ${{ inputs.region-2 }}, ${{ inputs.region-3 }} 
+                region: ["us-east-1", "us-west-2", "eu-west-1"]
         steps:
             - name: Deploy to AWS
               run: |
-                echo "Deploying to AWS regions ${{ inputs.region-1 }}, ${{ inputs.region-2 }}, and ${{ inputs.region-3 }}"
+                echo "Deploying to AWS regions ${{ matrix.region }}"
+                
